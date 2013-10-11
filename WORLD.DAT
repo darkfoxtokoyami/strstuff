@@ -1,0 +1,48 @@
+[START]
+>SOUTH:EXIT
+
+^DEFAULT
+This is the default area. There is a door here.  You see a TORCH and a GUN before you.
+{TORCH},{GUN}
+~OPEN
+Open what?
+~OPEN:DOOR
+You open the {'DOOR}
+
+^DOOR
+This is the default area. There is an open door here.  You see a TORCH and a GUN before you.
+{TORCH},{GUN}
+
+^TORCH
+This is the default area. There is a door here.  You see a GUN before you.
+{GUN}
+
+^GUN
+This is the default area. There is a door here.  You see a {TORCH} before you.
+
+^TORCH,GUN
+This is the default area. There is a door here.
+
+^TORCH,DOOR
+This is the default area. There is an open door here.  You see a GUN before you.
+{GUN}
+>DOOR:ROOM
+
+^GUN,DOOR
+This is the default area. There is an open door here.  You see a {TORCH} before you.
+>DOOR:ROOM
+
+^TORCH,GUN,DOOR
+This is the default area. There is an open door here.
+>DOOR:ROOM
+
+[EXIT]
+>NORTH:START
+^DEFAULT
+There is nothing here but darkness. Go NORTH to return to the game.
+
+[ROOM]
+>DOOR:START
+
+^DEFAULT
+You are in a tiny room, full of old computer parts.
