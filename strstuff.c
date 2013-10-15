@@ -9,6 +9,7 @@ int main (int argc, const char* argv[])
 	//It uses an old C90 ruleset.  Support for this was added to C in the C99 standard
 	room alpha;
 	room* rooms = (room*)malloc(sizeof(room));
+	char* strin = ""; //String from user Input
 	FILE* world = fopen("WORLD.DAT","r");		//TODO: Add a parameter parser to allow users to specify different worlds.
 	if (world == NULL)
 	{
@@ -19,24 +20,33 @@ int main (int argc, const char* argv[])
 	load_world(rooms, world);	//Load our world data into the rooms
 	
 	// TEST ROUTINES //
-	while (rooms != NULL)
+	/*while (rooms != NULL)
 	{
 		printf(rooms->name);
 		printf("\n");
-		printf(rooms->data);
-		printf("\n");
+		while (rooms->areas != NULL)
+		{
+			printf("\t");
+			printf(rooms->areas->name);
+			printf("\n");
+			printf("\t\t");
+			printf(rooms->areas->desc);
+			printf("\n");
+			rooms->areas = rooms->areas->next;
+		}
 		rooms = rooms->next;
+	}*/
+	while (strcmp (strin, "EXIT") != 0)
+	{
+		strin = strget(strin);
+		printf("\n");
+		if (strcmp(strin, "LOOK") == 0)
+		{
+			printf(rooms->areas->desc);
+			printf("\n\n");
+		}
 	}
-	
-	
-	alpha.next = add_room("Test3\n", "fagballs");
-	
-	
-	alpha.name = (char*)malloc(5+strlen("\n"));
-	strcpy(alpha.name, "Test\n");
-	alpha.data = "test";
-	printf(alpha.name);
-	free(alpha.name);
+	printf("User Exited. Press any key to quit.");
 	getchar();
 	//END TEST ROUTINES //
 

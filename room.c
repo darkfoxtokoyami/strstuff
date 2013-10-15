@@ -12,7 +12,7 @@ room* add_room(char* name, char* data)
 	}
 
 	t_room->name = name;
-	t_room->data = data;
+	t_room->areas->name = data;
 
 	return t_room;
 }
@@ -21,10 +21,11 @@ room* add_room(char* name, char* data)
 room* load_world(room* t_room, FILE* t_world)
 {
 	room* current_room;
+	area* first_area;
 	int initial = 1;		//Hate this variable name. Must change it later
-	char last_keyword = 0;
+	char last_keyword = 0;  //Keeps track of the last major keyword
+	char text_keyword = 0;  //Keeps track of which block of text we should be writing to
 	char current_char = 0;
-	char* t_name;
 
 	if (t_world == NULL)
 	{
@@ -45,37 +46,99 @@ room* load_world(room* t_room, FILE* t_world)
 				{
 					current_room = t_room;
 					current_room->name = "";
-					current_room->data = "";
 					initial = 0;
+
+					current_room->areas = (area*)malloc(sizeof(area));	//'new' room
+					if (current_room->areas == NULL)
+						return NULL;
+					current_room->areas->name = "";
+					current_room->areas->desc = "";
+					current_room->areas->next = NULL;
+					first_area = current_room->areas;
 				}
 				else
 				{
 					current_room->next = (room*)malloc(sizeof(room));	//'new' room
-					if (current_room == NULL)
+					if (current_room->next == NULL)
 						return NULL;
 					current_room = current_room->next;	//Cycle to the next room
 					current_room->next = NULL;
 					current_room->name = "";
-					current_room->data = "";
+
+					current_room->areas = (area*)malloc(sizeof(area));	//'new' room
+					if (current_room->areas == NULL)
+						return NULL;
+					current_room->areas->name = "";
+					current_room->areas->desc = "";
+					current_room->areas->next = NULL;
 				}
+				
 				break;
 			case ']':
 				last_keyword = current_char;
+			case '^':
+				text_keyword = last_keyword = current_char;
+
+				if (current_room->areas->name != "")
+				{
+					current_room->areas->next = (area*)malloc(sizeof(area));	//'new' room
+					if (current_room->areas->next == NULL)
+						return NULL;
+					current_room->areas = current_room->areas->next;
+					current_room->areas->name = "";
+					current_room->areas->desc = "";
+					current_room->areas->next = NULL;
+				}
+
+				break;
+			case '>':
+				text_keyword = last_keyword = current_char;
+				break;
+			case '~':
+				text_keyword = last_keyword = current_char;
 				break;
 			default:
 				switch (last_keyword)	//If not, parse the non-keyword items
 				{
 					case '[':
-						current_room->name = strccat(current_room->name, current_char);
+						if (current_char != '\n')
+							current_room->name = strccat(current_room->name, current_char);
 						break;
 					case ']':
-						current_room->data = strccat(current_room->data, current_char);
+						if (current_char != '\n')
+							current_room->areas->desc = strccat(current_room->areas->desc, current_char);
+						break;
+					case '^':
+						if (current_char == '\n')
+							last_keyword = '\n';
+						else
+							current_room->areas->name = strccat(current_room->areas->name, current_char);
+						break;
+					case '>':
+						if (current_char == '\n')
+							last_keyword = '\n';
+						break;
+					case '~':
+						if (current_char == '\n')
+							last_keyword = '\n';
+						break;
+					default:
+						if (current_char != '\n')
+						{
+							switch (text_keyword)
+							{
+								case '^':
+									current_room->areas->desc = strccat(current_room->areas->desc, current_char);
+									break;
+							}
+						}
 						break;
 				}
 				break;
 		}
 	}
 
+	t_room->areas = first_area;	//Assigns the first area to the room so we get a freshly started linked list to mess with
 	//return t_room;
 	return NULL;
 }
