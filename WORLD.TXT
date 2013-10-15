@@ -1,0 +1,5 @@
+[NAME]		Name of room
+^NAME		List of items/switches that determine the displayed text, the main/default is DEFAULT
+~ACTION		Action. Specific actions are like ~ACTION:SPECIFIC, like ~OPEN:DOOR
+{ITEM}		Item/switch.  Items are {ITEM}, switches have a ' infront of the name, like {'SWITCH}
+>DIR:DEST	Exits. Direction followed by destination, e.g. >SOUTH:AREA52

@@ -12,6 +12,7 @@ You open the {'DOOR}
 ^DOOR
 This is the default area. There is an open door here.  You see a TORCH and a GUN before you.
 {TORCH},{GUN}
+>DOOR:ROOM
 
 ^TORCH
 This is the default area. There is a door here.  You see a GUN before you.

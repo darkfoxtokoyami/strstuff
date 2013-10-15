@@ -2,6 +2,8 @@
 #include <stdlib.h>
 #include <string.h>
 
+#include "text.h"
+
 typedef struct		//I think structs need to be declared in the h file?
 {
 	char* name;

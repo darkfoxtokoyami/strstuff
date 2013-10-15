@@ -66,16 +66,10 @@ room* load_world(room* t_room, FILE* t_world)
 				switch (last_keyword)	//If not, parse the non-keyword items
 				{
 					case '[':
-							t_name = (char*)malloc(strlen(current_room->name)+2);
-							strcpy(t_name, current_room->name);
-							strncat(t_name, &current_char, 1);
-							current_room->name = t_name;
+						current_room->name = strccat(current_room->name, current_char);
 						break;
 					case ']':
-							t_name = (char*)malloc(strlen(current_room->data)+2);
-							strcpy(t_name, current_room->data);
-							strncat(t_name, &current_char, 1);
-							current_room->data = t_name;
+						current_room->data = strccat(current_room->data, current_char);
 						break;
 				}
 				break;

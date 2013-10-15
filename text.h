@@ -2,5 +2,4 @@
 #include <stdlib.h>
 #include <string.h>
 
-#include "room.h"
-#include "text.h"
+char* strccat (char* str, char c);
