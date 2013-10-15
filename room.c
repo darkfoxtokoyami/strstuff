@@ -45,14 +45,16 @@ room* load_world(room* t_room, FILE* t_world)
 				if (initial == 1)	//First run initialization
 				{
 					current_room = t_room;
-					current_room->name = "";
+					current_room->name = strmalloc();
+					current_room->first = t_room;
 					initial = 0;
 
 					current_room->areas = (area*)malloc(sizeof(area));	//'new' room
 					if (current_room->areas == NULL)
 						return NULL;
-					current_room->areas->name = "";
-					current_room->areas->desc = "";
+					current_room->areas->name = strmalloc();
+					current_room->areas->desc = strmalloc();
+					current_room->areas->first = t_room->areas;
 					current_room->areas->next = NULL;
 					first_area = current_room->areas;
 				}
@@ -61,15 +63,17 @@ room* load_world(room* t_room, FILE* t_world)
 					current_room->next = (room*)malloc(sizeof(room));	//'new' room
 					if (current_room->next == NULL)
 						return NULL;
+					current_room->first = t_room;
 					current_room = current_room->next;	//Cycle to the next room
 					current_room->next = NULL;
-					current_room->name = "";
+					current_room->name = strmalloc();
 
 					current_room->areas = (area*)malloc(sizeof(area));	//'new' room
 					if (current_room->areas == NULL)
 						return NULL;
-					current_room->areas->name = "";
-					current_room->areas->desc = "";
+					current_room->areas->name = strmalloc();
+					current_room->areas->desc = strmalloc();
+					current_room->areas->first = t_room->areas;
 					current_room->areas->next = NULL;
 				}
 				
@@ -79,14 +83,14 @@ room* load_world(room* t_room, FILE* t_world)
 			case '^':
 				text_keyword = last_keyword = current_char;
 
-				if (current_room->areas->name != "")
+				if (strlen(current_room->areas->name) != 0)
 				{
 					current_room->areas->next = (area*)malloc(sizeof(area));	//'new' room
 					if (current_room->areas->next == NULL)
 						return NULL;
 					current_room->areas = current_room->areas->next;
-					current_room->areas->name = "";
-					current_room->areas->desc = "";
+					current_room->areas->name = strmalloc();
+					current_room->areas->desc = strmalloc();
 					current_room->areas->next = NULL;
 				}
 

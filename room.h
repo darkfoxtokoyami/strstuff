@@ -13,6 +13,7 @@ typedef struct		//I think structs need to be declared in the h file?
 {
 	char* name;
 	area* areas;
+	struct room* first;
 	struct room* next;
 }room;
 

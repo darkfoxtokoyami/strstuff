@@ -14,6 +14,7 @@ typedef struct
 {
 	char* name;
 	char* desc;
+	struct area* first;
 	struct area* next;
 }area;
 

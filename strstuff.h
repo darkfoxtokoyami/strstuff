@@ -7,5 +7,6 @@
 
 #include "room.h"
 #include "text.h"
+#include "loop.h"
 
 #endif //__STRSTUFF_H__

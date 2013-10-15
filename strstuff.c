@@ -9,7 +9,7 @@ int main (int argc, const char* argv[])
 	//It uses an old C90 ruleset.  Support for this was added to C in the C99 standard
 	room alpha;
 	room* rooms = (room*)malloc(sizeof(room));
-	char* strin = ""; //String from user Input
+	char* t_str = strmalloc();
 	FILE* world = fopen("WORLD.DAT","r");		//TODO: Add a parameter parser to allow users to specify different worlds.
 	if (world == NULL)
 	{
@@ -35,17 +35,18 @@ int main (int argc, const char* argv[])
 			rooms->areas = rooms->areas->next;
 		}
 		rooms = rooms->next;
-	}*/
-	while (strcmp (strin, "EXIT") != 0)
-	{
-		strin = strget(strin);
-		printf("\n");
-		if (strcmp(strin, "LOOK") == 0)
-		{
-			printf(rooms->areas->desc);
-			printf("\n\n");
-		}
 	}
+	if (t_str == "")
+		printf("Empty String");
+	else if (t_str == NULL)
+		printf("NULL String");
+	else
+	{
+		itoa(strlen(t_str), t_str, 1);
+		printf(t_str);
+	}*/
+
+	gameloop(rooms);
 	printf("User Exited. Press any key to quit.");
 	getchar();
 	//END TEST ROUTINES //
