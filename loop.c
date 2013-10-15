@@ -20,7 +20,8 @@ int gameloop(room* rooms)
 		}
 		else
 		{
-			printf("I don't understand that command!\n");
+			//printf("I don't understand that command!\n");
+			rooms = change_room(rooms, strin);
 		}
 	}
 	return 0;

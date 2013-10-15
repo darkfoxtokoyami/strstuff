@@ -9,11 +9,13 @@
 #include <string.h>
 
 #include "text.h"
+#include "door.h"
 
 typedef struct
 {
 	char* name;
 	char* desc;
+	struct door* doors;
 	struct area* first;
 	struct area* next;
 }area;

@@ -18,6 +18,8 @@ typedef struct		//I think structs need to be declared in the h file?
 }room;
 
 room* add_room(char* name, char* data);
+room* change_room(room* t_room, char* name);
 room* load_world(room* t_room, FILE* t_world);
+
 
 #endif //__ROOM_H__

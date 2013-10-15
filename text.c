@@ -1,6 +1,7 @@
 #include "text.h"
 
 
+//Dynamically allocates strings so we can free everything in a clean fashion later
 char* strmalloc ()
 {
 	char* t_str;

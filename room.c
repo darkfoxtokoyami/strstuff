@@ -17,6 +17,29 @@ room* add_room(char* name, char* data)
 	return t_room;
 }
 
+//Tries to change the room for the player.  If it fails to find the room, it will remain in the same room
+room* change_room(room* t_room, char* name)
+{
+	room* current_room = t_room;
+
+	if (t_room == NULL || t_room->first == NULL)
+		return NULL;
+
+	t_room = t_room->first;
+
+	//Loops through the rooms until it finds a hit or ends
+	while ((strcmp(t_room->name, name) != 0) && (t_room->next != NULL))
+		t_room = t_room->next;
+
+	//If we didn't find a hit, go home, you're drunk
+	if (t_room == NULL || strcmp(t_room->name, name) != 0)
+	{
+		printf("Failed to change rooms.\n");
+		t_room = current_room;
+	}
+	return t_room;
+}
+
 //Loads all the data into the rooms at once (sort of makes add_room obsolete)//
 room* load_world(room* t_room, FILE* t_world)
 {
@@ -52,10 +75,6 @@ room* load_world(room* t_room, FILE* t_world)
 					current_room->areas = (area*)malloc(sizeof(area));	//'new' room
 					if (current_room->areas == NULL)
 						return NULL;
-					current_room->areas->name = strmalloc();
-					current_room->areas->desc = strmalloc();
-					current_room->areas->first = t_room->areas;
-					current_room->areas->next = NULL;
 					first_area = current_room->areas;
 				}
 				else
@@ -63,23 +82,23 @@ room* load_world(room* t_room, FILE* t_world)
 					current_room->next = (room*)malloc(sizeof(room));	//'new' room
 					if (current_room->next == NULL)
 						return NULL;
-					current_room->first = t_room;
 					current_room = current_room->next;	//Cycle to the next room
+					current_room->first = t_room;
 					current_room->next = NULL;
 					current_room->name = strmalloc();
 
 					current_room->areas = (area*)malloc(sizeof(area));	//'new' room
 					if (current_room->areas == NULL)
 						return NULL;
-					current_room->areas->name = strmalloc();
-					current_room->areas->desc = strmalloc();
-					current_room->areas->first = t_room->areas;
-					current_room->areas->next = NULL;
 				}
-				
+				current_room->areas->name = strmalloc();
+				current_room->areas->desc = strmalloc();
+				current_room->areas->first = t_room->areas;
+				current_room->areas->next = NULL;
 				break;
 			case ']':
 				last_keyword = current_char;
+				break;
 			case '^':
 				text_keyword = last_keyword = current_char;
 
@@ -144,5 +163,5 @@ room* load_world(room* t_room, FILE* t_world)
 
 	t_room->areas = first_area;	//Assigns the first area to the room so we get a freshly started linked list to mess with
 	//return t_room;
-	return NULL;
+	return current_room;
 }
