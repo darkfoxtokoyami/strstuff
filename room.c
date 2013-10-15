@@ -1,6 +1,19 @@
 #include "room.h"
 
 
+//Allocates a room object
+room* alloc_room()
+{
+	room* t_room;
+	t_room = (room*)malloc(sizeof(room));
+	if (t_room == NULL)
+		return NULL;
+	t_room->name = strmalloc();
+	t_room->areas = NULL;
+	t_room->first = NULL;
+	t_room->next = NULL;
+	return t_room;
+}
 // Adds a room if we know what data we want in it //
 room* add_room(char* name, char* data)
 {
@@ -72,29 +85,24 @@ room* load_world(room* t_room, FILE* t_world)
 					current_room->first = t_room;
 					initial = 0;
 
-					current_room->areas = (area*)malloc(sizeof(area));	//'new' room
+					current_room->areas = alloc_area();	//'new' room
 					if (current_room->areas == NULL)
 						return NULL;
 					first_area = current_room->areas;
 				}
 				else
 				{
-					current_room->next = (room*)malloc(sizeof(room));	//'new' room
+					current_room->next = alloc_room();	//'new' room
 					if (current_room->next == NULL)
 						return NULL;
 					current_room = current_room->next;	//Cycle to the next room
 					current_room->first = t_room;
-					current_room->next = NULL;
-					current_room->name = strmalloc();
 
-					current_room->areas = (area*)malloc(sizeof(area));	//'new' room
+					current_room->areas = alloc_area();	//'new' room
 					if (current_room->areas == NULL)
 						return NULL;
 				}
-				current_room->areas->name = strmalloc();
-				current_room->areas->desc = strmalloc();
 				current_room->areas->first = t_room->areas;
-				current_room->areas->next = NULL;
 				break;
 			case ']':
 				last_keyword = current_char;
@@ -104,13 +112,10 @@ room* load_world(room* t_room, FILE* t_world)
 
 				if (strlen(current_room->areas->name) != 0)
 				{
-					current_room->areas->next = (area*)malloc(sizeof(area));	//'new' room
+					current_room->areas->next = alloc_area();	//'new' room
 					if (current_room->areas->next == NULL)
 						return NULL;
 					current_room->areas = current_room->areas->next;
-					current_room->areas->name = strmalloc();
-					current_room->areas->desc = strmalloc();
-					current_room->areas->next = NULL;
 				}
 
 				break;
@@ -137,11 +142,11 @@ room* load_world(room* t_room, FILE* t_world)
 						else
 							current_room->areas->name = strccat(current_room->areas->name, current_char);
 						break;
-					case '>':
+					case '>':	//Not yet implemented
 						if (current_char == '\n')
 							last_keyword = '\n';
 						break;
-					case '~':
+					case '~':	//Not yet implemented
 						if (current_char == '\n')
 							last_keyword = '\n';
 						break;

@@ -20,5 +20,5 @@ typedef struct
 	struct area* next;
 }area;
 
-
+area* alloc_area();
 #endif //__AREA_H__

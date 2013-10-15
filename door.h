@@ -17,4 +17,5 @@ typedef struct
 	struct door* next;
 }door;
 
+door* alloc_door();
 #endif //__DOOR_H__
