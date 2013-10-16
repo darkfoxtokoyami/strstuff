@@ -11,5 +11,6 @@
 #include "door.h"
 #include "text.h"
 
+void look(room* rooms);	//Function for just displaying the room we're in
 int gameloop(room* rooms);
 #endif //__LOOP_H__

@@ -45,9 +45,11 @@ This is the default area. There is an open door here.
 >SOUTH:EXIT
 
 [EXIT]
+>NORTH:START
+
 ^DEFAULT
 There is nothing here but darkness. Go NORTH to return to the game.
->NORTH:START
+
 
 [ROOM]
 ^DEFAULT
