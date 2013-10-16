@@ -1,6 +1,6 @@
 #include "door.h"
 
-door* alloc_door()
+door* alloc_door()	//USE THIS FOR THE FIRST INITIALIZATION
 {
 	door* t_door;
 	t_door = (door*)malloc(sizeof(door));
@@ -14,7 +14,7 @@ door* alloc_door()
 	return t_door;
 }
 
-door* alloc_doorFirst(door* first_door)
+door* alloc_doorFirst(door* first_door)	//DO -NOT- USE THIS FOR THE FIRST INITIALIZATION
 {
 	door* t_door;
 	t_door = (door*)malloc(sizeof(door));

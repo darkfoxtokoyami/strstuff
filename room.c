@@ -2,7 +2,7 @@
 
 
 //Allocates a room object
-room* alloc_room()
+room* alloc_room() //USE THIS FOR THE FIRST INITIALIZATION
 {
 	room* t_room;
 	t_room = (room*)malloc(sizeof(room));
@@ -10,13 +10,14 @@ room* alloc_room()
 		return NULL;
 	t_room->name = strmalloc();
 	t_room->areas = NULL;
+	t_room->doors = alloc_door();
 	t_room->first = NULL;
 	t_room->next = NULL;
 	return t_room;
 }
 
 //Allocates a room object and associates the first room correctly
-room* alloc_roomFirst(room* first_room)
+room* alloc_roomFirst(room* first_room) //DO -NOT- USE THIS FOR THE FIRST INITIALIZATION
 {
 	room* t_room;
 	t_room = (room*)malloc(sizeof(room));
@@ -24,6 +25,7 @@ room* alloc_roomFirst(room* first_room)
 		return NULL;
 	t_room->name = strmalloc();
 	t_room->areas = NULL;
+	t_room->doors = alloc_door();
 	t_room->first = first_room;
 	t_room->next = NULL;
 	return t_room;
@@ -93,6 +95,9 @@ room* load_world(room* t_room, FILE* t_world)
 	{
 		switch (current_char)	//Is this a keyword?
 		{
+			case '#':	//Comment character. Ignore this shit.
+				last_keyword = current_char;
+				break;
 			case '[':
 				last_keyword = current_char;
 				if (initial == 1)	//First run initialization
@@ -100,6 +105,7 @@ room* load_world(room* t_room, FILE* t_world)
 					current_room = t_room;
 					current_room->name = strmalloc();
 					current_room->first = t_room;
+					current_room->doors = alloc_door();
 					initial = 0;
 
 					current_room->areas = alloc_area();	//'new' area
@@ -135,7 +141,6 @@ room* load_world(room* t_room, FILE* t_world)
 				break;
 			case '^':
 				text_keyword = last_keyword = current_char;
-
 				if (strlen(current_room->areas->name) != 0)
 				{
 					current_room->areas->next = alloc_areaFirst((area*)current_room->areas->first);	//'new' room
@@ -187,8 +192,13 @@ room* load_world(room* t_room, FILE* t_world)
 						}
 						else if (current_char == ':')
 							colon_count = 1;
+						else if (text_keyword == 0)	//Are we putting this in an area or the standard Room pool?
+							if (colon_count == 1)
+								current_room->doors->room = strccat(current_room->doors->room, current_char);
+							else
+								current_room->doors->name = strccat(current_room->doors->name, current_char);
 						else if (colon_count == 1)
-							current_room->areas->doors->room = strccat(current_room->areas->doors->room, current_char);
+								current_room->areas->doors->room = strccat(current_room->areas->doors->room, current_char);
 						else
 							current_room->areas->doors->name = strccat(current_room->areas->doors->name, current_char);
 						break;

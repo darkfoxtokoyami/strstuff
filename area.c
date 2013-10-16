@@ -1,6 +1,6 @@
 #include "area.h"
 
-area* alloc_area()
+area* alloc_area() //USE THIS FOR THE FIRST INITIALIZATION
 {
 	area* t_area;
 	t_area = (area*)malloc(sizeof(area));
@@ -14,7 +14,7 @@ area* alloc_area()
 	return t_area;
 }
 
-area* alloc_areaFirst(area* first_area)
+area* alloc_areaFirst(area* first_area) //DO -NOT- USE THIS FOR THE FIRST INITIALIZATION
 {
 	area* t_area;
 	t_area = (area*)malloc(sizeof(area));

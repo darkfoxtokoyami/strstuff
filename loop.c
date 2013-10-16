@@ -30,6 +30,8 @@ int gameloop(room* rooms)
 			//Check if this is a door we're being hit with by the user
 			if (find_door(rooms->areas->doors,strin) != NULL)
 				rooms = change_room(rooms, find_door(rooms->areas->doors,strin));
+			else if (find_door(rooms->doors,strin) != NULL)
+				rooms = change_room(rooms, find_door(rooms->doors,strin));
 			else
 				printf("I don't understand that command!\n\n");
 		}

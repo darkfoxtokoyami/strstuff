@@ -45,7 +45,7 @@ int main (int argc, const char* argv[])
 		itoa(strlen(t_str), t_str, 1);
 		printf(t_str);
 	}*/
-
+	printf(rooms->doors->name);
 	gameloop(rooms);
 	printf("User Exited. Press any key to quit.");
 	getchar();
