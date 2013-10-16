@@ -72,19 +72,17 @@ void free_text(text* t_text)
 		return;
 	f_text = t_text->first;
 	t_text = t_text->first;
+	n_text = t_text;
 
-	while (t_text->next != NULL);
-	{
-			free(t_text->word);
-	}
-
-	t_text = t_text->first;
+	t_text = f_text;
 	while(t_text != NULL)
 	{
 		n_text = t_text;
 		t_text = t_text->next;
+		free(n_text->word);
 		free(n_text);
 	}
+	t_text = f_text;
 }
 
 void clear_text(text* t_text)
@@ -94,18 +92,70 @@ void clear_text(text* t_text)
 	return;
 }
 
+void print_text(text* str)
+{
+	text* t_text = str;
+	str = str->first;
+
+	printf("\n");
+
+	while (str != NULL)
+	{
+		printf(str->word);
+		str = str->next;
+		if (str != NULL)
+			printf(",");
+	}
+
+	printf("\n");
+	str = t_text;
+	return;
+}
+
 text* strgett (text* str)
 {
 	char c = 0;
+	char p_char = ' ';	//This is a parsing character that'll determine whether the last character was 'whitespace' or not
+	int alloc_new = 0;  //Determines if we should create a new word when the next character is entered.
 	clear_text(str);
 	printf(">");	//Prompt user for input with 'cursor'
 	while (c != '\n')
 	{
 		c =  getchar();
-		if (c != '\n')
-			str->word = strccat(str->word, toupper(c));
+		switch (c)
+		{
+			//Kill garbage characters
+			case '.':
+			case ';':
+			case ',':
+			case '\'':
+			case '\\':
+			case '?':
+			case '!':
+			case '\n':
+				break;
+			case ' ':		//This parses/breaks up the words appropriately
+				if (p_char != ' ')
+				{
+					alloc_new = 1;
+					p_char = ' ';
+				}
+				break;
+			default:
+				if (alloc_new == 1)
+				{
+					str->next = alloc_textFirst(str->first);
+					str = str->next;
+					alloc_new = 0;
+				}
+				p_char = c;
+				str->word = strccat(str->word, toupper(c));
+				break;
+		}
 	}
 
+	print_text(str);
+	str = str->first;
 	return str;
 }
 
