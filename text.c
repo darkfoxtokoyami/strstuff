@@ -1,6 +1,5 @@
 #include "text.h"
 
-
 //Dynamically allocates strings so we can free everything in a clean fashion later
 char* strmalloc ()
 {
@@ -41,3 +40,73 @@ char* strget (char* str)
 
 	return str;
 }
+
+// Text Stuff //
+
+text* alloc_text()
+{
+	text* t_text = (text*)malloc(sizeof(text));
+	t_text->word = strmalloc();
+	t_text->first = t_text;
+	t_text->next = NULL;
+
+	return t_text;
+}
+
+text* alloc_textFirst(text* first_text)
+{
+	text* t_text = (text*)malloc(sizeof(text));
+	t_text->word = strmalloc();
+	t_text->first = first_text;
+	t_text->next = NULL;
+
+	return t_text;
+}
+
+void free_text(text* t_text)
+{
+	text* n_text;	//Helps free nodes;
+	text* f_text;	//First node to recycle first node;
+
+	if (t_text == NULL)
+		return;
+	f_text = t_text->first;
+	t_text = t_text->first;
+
+	while (t_text->next != NULL);
+	{
+			free(t_text->word);
+	}
+
+	t_text = t_text->first;
+	while(t_text != NULL)
+	{
+		n_text = t_text;
+		t_text = t_text->next;
+		free(n_text);
+	}
+}
+
+void clear_text(text* t_text)
+{
+	free_text(t_text);
+	t_text = alloc_text();
+	return;
+}
+
+text* strgett (text* str)
+{
+	char c = 0;
+	clear_text(str);
+	printf(">");	//Prompt user for input with 'cursor'
+	while (c != '\n')
+	{
+		c =  getchar();
+		if (c != '\n')
+			str->word = strccat(str->word, toupper(c));
+	}
+
+	return str;
+}
+
+// End Text Stuff //

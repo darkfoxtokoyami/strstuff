@@ -11,37 +11,37 @@ void look(room* rooms)
 
 int gameloop(room* rooms)
 {
-	char* strin = strmalloc();
+	text* strin = alloc_text();
 
 	look(rooms);
-	while (strcmp (strin, "EXIT") != 0)
+	while (strcmp (strin->word, "EXIT") != 0)
 	{
-		strin = strget(strin);
+		strin = strgett(strin);
 		printf("\n");
-		if (strcmp(strin, "LOOK") == 0)
+		if (strcmp(strin->word, "LOOK") == 0)
 		{
 			look(rooms);
 		}
-		else if (strcmp(strin, "LISTDOOR") == 0)
+		else if (strcmp(strin->word, "LISTDOOR") == 0)
 		{
 			printf(rooms->areas->doors->name);
 			printf("\n\n");
 		}
-		else if (strcmp(strin, "EXIT") == 0)
+		else if (strcmp(strin->word, "EXIT") == 0)
 		{
 			//Exit message here, Save Y/N
 		}
 		else
 		{
 			//Check if this is a door we're being hit with by the user
-			if (find_door(rooms->areas->doors,strin) != NULL)
+			if (find_door(rooms->areas->doors,strin->word) != NULL)
 			{
-				rooms = change_room(rooms, find_door(rooms->areas->doors,strin));
+				rooms = change_room(rooms, find_door(rooms->areas->doors,strin->word));
 				look(rooms);
 			}
-			else if (find_door(rooms->doors,strin) != NULL)
+			else if (find_door(rooms->doors,strin->word) != NULL)
 			{
-				rooms = change_room(rooms, find_door(rooms->doors,strin));
+				rooms = change_room(rooms, find_door(rooms->doors,strin->word));
 				look(rooms);
 			}
 			else
