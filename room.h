@@ -8,6 +8,8 @@
 #include <string.h>
 
 #include "text.h"
+#include "area.h"
+#include "door.h"
 
 typedef struct		//I think structs need to be declared in the h file?
 {
@@ -17,7 +19,8 @@ typedef struct		//I think structs need to be declared in the h file?
 	struct room* next;
 }room;
 
-room* alloc_room(room* t_room);
+room* alloc_room();
+room* alloc_roomFirst(room* first_room);
 room* add_room(char* name, char* data);
 room* change_room(room* t_room, char* name);
 room* load_world(room* t_room, FILE* t_world);

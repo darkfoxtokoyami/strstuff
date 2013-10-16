@@ -18,4 +18,5 @@ typedef struct
 }door;
 
 door* alloc_door();
+door* first_door(door* t_door);
 #endif //__DOOR_H__

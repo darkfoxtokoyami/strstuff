@@ -14,6 +14,21 @@ room* alloc_room()
 	t_room->next = NULL;
 	return t_room;
 }
+
+//Allocates a room object and associates the first room correctly
+room* alloc_roomFirst(room* first_room)
+{
+	room* t_room;
+	t_room = (room*)malloc(sizeof(room));
+	if (t_room == NULL)
+		return NULL;
+	t_room->name = strmalloc();
+	t_room->areas = NULL;
+	t_room->first = first_room;
+	t_room->next = NULL;
+	return t_room;
+}
+
 // Adds a room if we know what data we want in it //
 room* add_room(char* name, char* data)
 {
@@ -57,7 +72,7 @@ room* change_room(room* t_room, char* name)
 room* load_world(room* t_room, FILE* t_world)
 {
 	room* current_room;
-	area* first_area;
+	//area* first_area;
 	int initial = 1;		//Hate this variable name. Must change it later
 	char last_keyword = 0;  //Keeps track of the last major keyword
 	char text_keyword = 0;  //Keeps track of which block of text we should be writing to
@@ -88,11 +103,17 @@ room* load_world(room* t_room, FILE* t_world)
 					current_room->areas = alloc_area();	//'new' room
 					if (current_room->areas == NULL)
 						return NULL;
-					first_area = current_room->areas;
+
+					current_room->areas = first_area((area*)current_room->areas);
+
+					current_room->areas->doors = alloc_door();	//'new' room
+					if (current_room->areas->doors == NULL)
+						return NULL;
 				}
 				else
 				{
-					current_room->next = alloc_room();	//'new' room
+					current_room->areas = (area*)current_room->areas->first;
+					current_room->next = alloc_roomFirst((room*)current_room->first);	//'new' room
 					if (current_room->next == NULL)
 						return NULL;
 					current_room = current_room->next;	//Cycle to the next room
@@ -102,7 +123,6 @@ room* load_world(room* t_room, FILE* t_world)
 					if (current_room->areas == NULL)
 						return NULL;
 				}
-				current_room->areas->first = t_room->areas;
 				break;
 			case ']':
 				last_keyword = current_char;
@@ -112,7 +132,7 @@ room* load_world(room* t_room, FILE* t_world)
 
 				if (strlen(current_room->areas->name) != 0)
 				{
-					current_room->areas->next = alloc_area();	//'new' room
+					current_room->areas->next = alloc_areaFirst((area*)current_room->areas->first);	//'new' room
 					if (current_room->areas->next == NULL)
 						return NULL;
 					current_room->areas = current_room->areas->next;
@@ -134,7 +154,7 @@ room* load_world(room* t_room, FILE* t_world)
 						break;
 					case ']':
 						if (current_char != '\n')
-							current_room->areas->desc = strccat(current_room->areas->desc, current_char);
+							//current_room->areas->desc = strccat(current_room->areas->desc, current_char);
 						break;
 					case '^':
 						if (current_char == '\n')
@@ -166,7 +186,8 @@ room* load_world(room* t_room, FILE* t_world)
 		}
 	}
 
-	t_room->areas = first_area;	//Assigns the first area to the room so we get a freshly started linked list to mess with
+	t_room = current_room->first;
+	//t_room->areas = first_area;	//Assigns the first area to the room so we get a freshly started linked list to mess with
 	//return t_room;
-	return current_room;
+	return t_room;
 }

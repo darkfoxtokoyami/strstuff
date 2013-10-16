@@ -20,7 +20,7 @@ int main (int argc, const char* argv[])
 	load_world(rooms, world);	//Load our world data into the rooms
 	
 	// TEST ROUTINES //
-	/*while (rooms != NULL)
+	/*while (rooms != NULL)	//NOTE: Using this will break the room looking
 	{
 		printf(rooms->name);
 		printf("\n");

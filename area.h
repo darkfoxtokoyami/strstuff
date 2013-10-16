@@ -21,4 +21,6 @@ typedef struct
 }area;
 
 area* alloc_area();
+area* alloc_areaFirst(area* first_area);
+area* first_area(area* t_area);
 #endif //__AREA_H__
