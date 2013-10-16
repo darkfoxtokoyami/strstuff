@@ -15,7 +15,7 @@ typedef struct
 {
 	char* name;
 	char* desc;
-	struct door* doors;
+	door* doors;
 	struct area* first;
 	struct area* next;
 }area;

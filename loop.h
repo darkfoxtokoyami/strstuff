@@ -8,6 +8,7 @@
 #include <string.h>
 
 #include "room.h"
+#include "door.h"
 #include "text.h"
 
 int gameloop(room* rooms);

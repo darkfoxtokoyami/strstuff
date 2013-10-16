@@ -18,5 +18,7 @@ typedef struct
 }door;
 
 door* alloc_door();
+door* alloc_doorFirst(door* first_door);
 door* first_door(door* t_door);
+char* find_door(door* t_door, char* name);
 #endif //__DOOR_H__

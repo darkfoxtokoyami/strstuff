@@ -1,7 +1,7 @@
 [START]
 
 ^DEFAULT
-This is the default area. There is a door here.  You see a TORCH and a GUN before you.
+This is the default area. There is a door here.  You see a TORCH and a GUN before you. You came from the SOUTH.
 {TORCH},{GUN}
 ~OPEN
 Open what?

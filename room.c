@@ -48,11 +48,12 @@ room* add_room(char* name, char* data)
 //Tries to change the room for the player.  If it fails to find the room, it will remain in the same room
 room* change_room(room* t_room, char* name)
 {
-	room* current_room = t_room;
-
-	if (t_room == NULL || t_room->first == NULL)
-		return NULL;
-
+	room* current_room;
+	
+	if (name == NULL || t_room == NULL || t_room->first == NULL)
+		return t_room;
+	
+	current_room = t_room;
 	t_room = t_room->first;
 
 	//Loops through the rooms until it finds a hit or ends
@@ -74,6 +75,7 @@ room* load_world(room* t_room, FILE* t_world)
 	room* current_room;
 	//area* first_area;
 	int initial = 1;		//Hate this variable name. Must change it later
+	int colon_count = 0;	//Used to count the current word position in multi-word objects, like Doors and Actions
 	char last_keyword = 0;  //Keeps track of the last major keyword
 	char text_keyword = 0;  //Keeps track of which block of text we should be writing to
 	char current_char = 0;
@@ -100,13 +102,13 @@ room* load_world(room* t_room, FILE* t_world)
 					current_room->first = t_room;
 					initial = 0;
 
-					current_room->areas = alloc_area();	//'new' room
+					current_room->areas = alloc_area();	//'new' area
 					if (current_room->areas == NULL)
 						return NULL;
 
 					current_room->areas = first_area((area*)current_room->areas);
 
-					current_room->areas->doors = alloc_door();	//'new' room
+					current_room->areas->doors = alloc_door();	//'new' door
 					if (current_room->areas->doors == NULL)
 						return NULL;
 				}
@@ -119,8 +121,12 @@ room* load_world(room* t_room, FILE* t_world)
 					current_room = current_room->next;	//Cycle to the next room
 					current_room->first = t_room;
 
-					current_room->areas = alloc_area();	//'new' room
+					current_room->areas = alloc_area();	//'new' area
 					if (current_room->areas == NULL)
+						return NULL;
+
+					current_room->areas->doors = alloc_door();	//'new' door
+					if (current_room->areas->doors == NULL)
 						return NULL;
 				}
 				break;
@@ -136,11 +142,22 @@ room* load_world(room* t_room, FILE* t_world)
 					if (current_room->areas->next == NULL)
 						return NULL;
 					current_room->areas = current_room->areas->next;
+
+					current_room->areas->doors = alloc_door();	//'new' door
+					if (current_room->areas->doors == NULL)
+						return NULL;
 				}
 
 				break;
 			case '>':
 				text_keyword = last_keyword = current_char;
+				if (strlen(current_room->areas->doors->name) != 0)
+				{
+					current_room->areas->doors->next = alloc_doorFirst((door*)current_room->areas->doors->first);	//'new' room
+					if (current_room->areas->doors->next == NULL)
+						return NULL;
+					current_room->areas->doors = current_room->areas->doors->next;
+				}
 				break;
 			case '~':
 				text_keyword = last_keyword = current_char;
@@ -164,7 +181,16 @@ room* load_world(room* t_room, FILE* t_world)
 						break;
 					case '>':	//Not yet implemented
 						if (current_char == '\n')
+						{
 							last_keyword = '\n';
+							colon_count = 0;
+						}
+						else if (current_char == ':')
+							colon_count = 1;
+						else if (colon_count == 1)
+							current_room->areas->doors->room = strccat(current_room->areas->doors->room, current_char);
+						else
+							current_room->areas->doors->name = strccat(current_room->areas->doors->name, current_char);
 						break;
 					case '~':	//Not yet implemented
 						if (current_char == '\n')

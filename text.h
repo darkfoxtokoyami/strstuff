@@ -10,7 +10,7 @@
 #include <ctype.h>
 
 
-#include "area.h"
+//#include "area.h" // Breaks door.h
 
 char* strccat (char* str, char c);
 char* strget (char* str);
