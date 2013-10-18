@@ -19,7 +19,7 @@ int main (int argc, const char* argv[])
 
 	load_world(rooms, world);	//Load our world data into the rooms
 	
-	// TEST ROUTINES //
+	/// TEST ROUTINES //
 	/*while (rooms != NULL)	//NOTE: Using this will break the room looking
 	{
 		printf(rooms->name);
@@ -49,7 +49,7 @@ int main (int argc, const char* argv[])
 	gameloop(rooms);
 	printf("User Exited. Press any key to quit.");
 	getchar();
-	//END TEST ROUTINES //
+	/// END TEST ROUTINES //
 
 	fclose(world);
 	return 0;
