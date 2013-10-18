@@ -2,7 +2,10 @@
 
 #include "text.h"
 
-//Dynamically allocates strings so we can free everything in a clean fashion later
+/**
+ * Dynamically allocates strings so we can free everything in a clean fashion later
+ * @return Returns a newly allocated C String.
+ */
 char* strmalloc ()
 {
 	char* t_str;
@@ -13,7 +16,12 @@ char* strmalloc ()
 	return t_str;
 }
 
-//Similar to strncat-> This concatenates a character to a c string instead of a const char* to a c string
+/**
+ * Similar to strncat-> This concatenates a character to a c string instead of a const char* to a c string.
+ * @param[in,out] str - Pointer to a C String.
+ * @param[in] c - Character to be appended to str.
+ * @return Returns the C String str.
+ */
 char* strccat (char* str, char c)
 {
 	char* t_str;
@@ -26,7 +34,11 @@ char* strccat (char* str, char c)
 	return t_str;
 }
 
-//This will be our getline function.  We'll probably add a struct object to parse multiple words more effectively later on
+/**
+ * This gets a line from stdin and allocates it to the specified C String.
+ * @param[in,out] str - Pointer to a C String.
+ * @return Returns str, filled with stdin up to \n
+ */
 char* strget (char* str)
 {
 	char c = 0;
@@ -43,7 +55,7 @@ char* strget (char* str)
 	return str;
 }
 
-// Text Stuff //
+// Text Algorithms //
 
 /**
  * Allocates a new text object and associates itself to text->first.  Does not free() before malloc. USE THIS TO ALLOCATE INITIAL OBJECT.
@@ -119,6 +131,11 @@ text* clear_text(text* str)
 	return str;
 }
 
+/**
+ * Prints a text object to stdout.  Loops through all words in text object and prints them, delimited by commas.
+ * @param[in] str - Pointer to a text.
+ * @return Returns void.
+ */
 void print_text(text* str)
 {
 	text* t_text = str;
@@ -204,9 +221,37 @@ int txtlen(text* str)
 	return 0;
 }
 
-int txtcmp(text* str)	//TODO
+/**
+ * Compares two text objects in the same fashion strcmp() compares char*'s. 
+ * @param[in] str1 - Pointer to a text.  Compared against str2.
+ * @param[in] str2 - Pointer to a text.  Compared against str1.
+ * @return Returns an integral value indicating the relationshp between the text objects. A zero value indicates both text objects are equal.  A value greater than zero indicates that the first character that does not match has a greater value in str1 than in str2; And a value less than zero indicates the opposite.
+ */
+int txtcmp(text* str1, text* str2)
 {
-	return 0;
+	// Initialization //
+	text* t_str1;
+	text* t_str2; 
+	int compare = 0;
+
+	//  NULL Validation  //
+	if (str1 == NULL || str2 == NULL || str1->first == NULL || str2->first == NULL)
+		return 0;
+
+	// Primary Function //
+	t_str1 = str1->first;
+	t_str2 = str2->first;
+
+	while (t_str1 != NULL && t_str2 != NULL && t_str1->word != NULL && t_str2->word != NULL && !compare)
+	{
+		compare = strcmp(t_str1->word, t_str2->word);
+
+		t_str1 = t_str1->next;
+		t_str2 = t_str2->next;
+	}
+
+	// Return Default //
+	return compare;
 }
 
 /**
@@ -223,8 +268,6 @@ int txtncmp(text* str1, text* str2)
 	int count = 0;
 
 	//  NULL Validation  //
-	if (str2 == NULL)
-		printf("Failed to parse str2\n");
 	if (str1 == NULL || str2 == NULL || str1->first == NULL || str2->first == NULL)
 		return 0;
 
@@ -254,6 +297,11 @@ int txtncmp(text* str1, text* str2)
 	return 0;
 }
 
+/**
+ * Converts a C String to a text object.
+ * @param[in] str - Pointer to a C String.
+ * @return Returns a newly allocated text object, populated with contents of str.
+ */
 text* atot (char* str)
 {
 	//  Initialization  //
