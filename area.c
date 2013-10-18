@@ -1,3 +1,4 @@
+/** @file */ 
 #include "area.h"
 
 area* alloc_area() //USE THIS FOR THE FIRST INITIALIZATION

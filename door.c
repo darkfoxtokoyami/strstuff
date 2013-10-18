@@ -1,3 +1,4 @@
+/** @file */ 
 #include "door.h"
 
 door* alloc_door()	//USE THIS FOR THE FIRST INITIALIZATION

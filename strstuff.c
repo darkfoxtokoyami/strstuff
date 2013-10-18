@@ -8,7 +8,7 @@ int main (int argc, const char* argv[])
 	//MSVS Doesn't allow declarations to follow statements in a block.
 	//It uses an old C90 ruleset.  Support for this was added to C in the C99 standard
 	room alpha;
-	room* rooms = (room*)malloc(sizeof(room));
+	room* rooms = alloc_room();
 	char* t_str = strmalloc();
 	FILE* world = fopen("WORLD.DAT","r");		//TODO: Add a parameter parser to allow users to specify different worlds.
 	if (world == NULL)

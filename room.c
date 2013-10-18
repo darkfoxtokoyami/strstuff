@@ -1,7 +1,12 @@
+/** @file */ 
+
 #include "room.h"
 
 
-//Allocates a room object
+/**
+ * Allocates a new room object and associates NULL to room->first.  Does not free() before malloc. USE THIS TO ALLOCATE INITIAL OBJECT.
+ * @return Returns the room* object as a newly allocated object.
+ */
 room* alloc_room() //USE THIS FOR THE FIRST INITIALIZATION
 {
 	room* t_room;
@@ -16,7 +21,11 @@ room* alloc_room() //USE THIS FOR THE FIRST INITIALIZATION
 	return t_room;
 }
 
-//Allocates a room object and associates the first room correctly
+/**
+ * Allocates a new room object and associates first_room to room->first.  Does not free() before malloc. WARNING: DO NOT USE THIS TO ALLOCATE INITIAL OBJECT.
+ * @param[in,out] first_room -  Pointer to a room object
+ * @return Returns the first_room object as a newly allocated object.
+ */
 room* alloc_roomFirst(room* first_room) //DO -NOT- USE THIS FOR THE FIRST INITIALIZATION
 {
 	room* t_room;
@@ -34,7 +43,7 @@ room* alloc_roomFirst(room* first_room) //DO -NOT- USE THIS FOR THE FIRST INITIA
 // Adds a room if we know what data we want in it //
 room* add_room(char* name, char* data)
 {
-	room* t_room = (room*)malloc(sizeof(room));
+	room* t_room = alloc_room();
 	if (t_room == NULL)
 	{
 		printf(">Error: Room node creation failed!");
@@ -47,10 +56,16 @@ room* add_room(char* name, char* data)
 	return t_room;
 }
 
-//Tries to change the room for the player.  If it fails to find the room, it will remain in the same room
+
+/**
+ * Tries to change the room for the player.  If it fails to find the room, it will remain in the same room
+ * @param[in,out] t_room - Pointer to a room object.
+ * @return Returns the t_room object, set to the changed or original room.
+ */
 room* change_room(room* t_room, char* name)
 {
-	room* current_room;
+	room* current_room;	//This is the current room the user is in. If changing room fails,
+						//	 the t_room gets assigned back to the original (current) room.
 	
 	if (name == NULL || t_room == NULL || t_room->first == NULL)
 		return t_room;
@@ -71,12 +86,18 @@ room* change_room(room* t_room, char* name)
 	return t_room;
 }
 
-//Loads all the data into the rooms at once (sort of makes add_room obsolete)//
+/**
+ * Loads all the data into the rooms at once (sort of makes add_room obsolete)
+ * @param[in,out] t_room - Pointer to a room object. This room should be allocated with alloc_room before it is passed in.
+ * @param[in] t_world - Pointer to a FILE.  This is the WORLD.DAT file that we want to load into our game.
+ * @return Returns the t_room object, filled with parsed world data.
+ * @see alloc_room()
+ */
 room* load_world(room* t_room, FILE* t_world)
 {
 	room* current_room;
 	//area* first_area;
-	int initial = 1;		//Hate this variable name. Must change it later
+	int initial = 1;		// Hate this variable name. Must change it later
 	int colon_count = 0;	//Used to count the current word position in multi-word objects, like Doors and Actions
 	char last_keyword = 0;  //Keeps track of the last major keyword
 	char text_keyword = 0;  //Keeps track of which block of text we should be writing to
@@ -103,9 +124,7 @@ room* load_world(room* t_room, FILE* t_world)
 				if (initial == 1)	//First run initialization
 				{
 					current_room = t_room;
-					current_room->name = strmalloc();
 					current_room->first = t_room;
-					current_room->doors = alloc_door();
 					initial = 0;
 
 					current_room->areas = alloc_area();	//'new' area

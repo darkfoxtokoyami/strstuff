@@ -1,3 +1,5 @@
+/** @file */ 
+
 #include "text.h"
 
 //Dynamically allocates strings so we can free everything in a clean fashion later
@@ -53,6 +55,11 @@ text* alloc_text()
 	return t_text;
 }
 
+/**
+ * Allocates a new text object and associates first_text to text->first.  Does not free() before malloc. WARNING: DO NOT USE THIS TO ALLOCATE INITIAL OBJECT.
+ * @param[in,out] first_text -  Pointer to a text object
+ * @return Returns the first_text object as a newly allocated object.
+ */
 text* alloc_textFirst(text* first_text)
 {
 	text* t_text = (text*)malloc(sizeof(text));
@@ -111,6 +118,29 @@ void print_text(text* str)
 	str = t_text;
 	return;
 }
+
+/**
+ * Returns a count of how many words are in a text object.
+ * @param str - Pointer to a text.
+ * @return Returns a count of how many word elements are in a text object. Returns 0 if str contains no words or if str is NULL.
+ */
+int txtcnt(text* str)
+{
+	if (str == NULL)
+		return 0;
+
+	return 0;
+}
+
+int txtlen(text* str)
+{
+	if (str == NULL)
+		return 0;
+
+	return 0;
+}
+
+//int txtcmp(text* str)	//TODO
 
 text* strgett (text* str)
 {

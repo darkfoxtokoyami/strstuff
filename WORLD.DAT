@@ -1,5 +1,6 @@
 [START]
 >DOOR:ROOM
+>POTTY:TOILET
 
 ^DEFAULT
 This is the default area. There is a door here.  You see a TORCH and a GUN before you. You came from the SOUTH.
@@ -55,3 +56,9 @@ There is nothing here but darkness. Go NORTH to return to the game.
 ^DEFAULT
 You are in a tiny room, full of old computer parts.
 >DOOR:START
+
+[TOILET]
+>FLUSH:START
+
+^DEFAULT:
+You are in the amazing room of toilets!
