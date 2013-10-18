@@ -112,7 +112,7 @@ room* load_world(room* t_room, FILE* t_world)
 
 	//This loop reads in one character at a time and parses the different data types.
 	//See WORLD.TXT for description of the keyword characters
-	while ((current_char = fgetc(t_world)) != EOF)
+	while (((current_char = fgetc(t_world)) != EOF) && !feof(t_world))
 	{
 		switch (current_char)	//Is this a keyword?
 		{
