@@ -10,12 +10,14 @@
 
 #include "text.h"
 #include "door.h"
+#include "action.h"
 
 typedef struct
 {
 	char* name;
 	char* desc;
 	door* doors;
+	action* actions;
 	struct area* first;
 	struct area* next;
 }area;

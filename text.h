@@ -36,6 +36,7 @@ int txtlen(text* str);
 int txtcmp(text* str1, text* str2);
 int txtncmp(text* str1, text* str2);
 text* atot (char* str);
+text* txtccat (text* str, char c);
 text* strgett (text* str);
 
 #endif //__TEXT_H__

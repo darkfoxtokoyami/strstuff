@@ -10,12 +10,14 @@
 #include "text.h"
 #include "area.h"
 #include "door.h"
+#include "action.h"
 
 typedef struct		//I think structs need to be declared in the h file?
 {
 	char* name;
 	area* areas;
 	door* doors;
+	action* actions;
 	//item* items;	//Not yet implemented
 	struct room* first;
 	struct room* next;

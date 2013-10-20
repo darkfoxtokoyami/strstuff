@@ -346,6 +346,7 @@ text* atot (char* str)
 				break;
 			case '\0':
 				c = '\n';
+				break;
 			default:
 				if (alloc_new == 1)
 				{
@@ -367,6 +368,48 @@ text* atot (char* str)
 	/// END TEST ROUTINES //
 
 	// Default Return //
+	return t_str;
+}
+
+text* txtccat (text* str, char c)
+{
+	text* t_str;
+
+	if (str == NULL || str->first == NULL)
+		return NULL;
+
+	t_str = str;
+
+	switch (c)
+	{
+		//Kill garbage characters/Treat as whitespace
+		case '.':
+		case ':':
+		case ';':
+		case ',':
+		case '\'':
+		case '\\':
+		case '?':
+		case '!':
+		case ' ':
+			//This parses/breaks up the words appropriately
+			if (strlen(t_str->word) > 0)
+			{
+				t_str->next = alloc_textFirst((text*)t_str->first);
+				t_str = t_str->next;
+			}
+			break;
+
+		//If this is an EOL char, discard it, because that's the end of the action
+		case '\0':
+		case '\n':
+			break;
+		default:
+			//Add the char to the word
+			t_str->word = strccat(t_str->word, toupper(c));
+			break;
+	}
+
 	return t_str;
 }
 
@@ -424,13 +467,14 @@ text* strgett (text* str)
 		}
 	}
 
-	/// TEST ROUTINES //
-	print_text(str);
-	printf("Word count: %d\n", txtcnt(str));
-	printf("Text length: %d\n", txtlen(str));
-	printf("Compare A BC DEF: %d\n", txtncmp(str, atot("A BC DEF\n")));
-	printf("\n");
 	str = str->first;
+
+	/// TEST ROUTINES //
+	//print_text(str);
+	//printf("Word count: %d\n", txtcnt(str));
+	//printf("Text length: %d\n", txtlen(str));
+	//printf("Compare A BC DEF: %d\n", txtncmp(str, atot("A BC DEF\n"))); //atot is kind of buggy
+	//printf("\n");
 	/// END TEST ROUTINES //
 
 	// Default Return //

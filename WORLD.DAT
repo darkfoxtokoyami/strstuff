@@ -58,7 +58,9 @@ You are in a tiny room, full of old computer parts.
 >DOOR:START
 
 [TOILET]
->FLUSH:START
+>LEAVE:START
+~FLUSH
+You flush the toilet {'FLUSHED}
 
 ^DEFAULT:
 You are in the amazing room of toilets!

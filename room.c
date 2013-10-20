@@ -16,6 +16,7 @@ room* alloc_room() //USE THIS FOR THE FIRST INITIALIZATION
 	t_room->name = strmalloc();
 	t_room->areas = NULL;
 	t_room->doors = alloc_door();
+	t_room->actions = alloc_action();
 	t_room->first = NULL;
 	t_room->next = NULL;
 	return t_room;
@@ -35,6 +36,7 @@ room* alloc_roomFirst(room* first_room) //DO -NOT- USE THIS FOR THE FIRST INITIA
 	t_room->name = strmalloc();
 	t_room->areas = NULL;
 	t_room->doors = alloc_door();
+	t_room->actions = alloc_action();
 	t_room->first = first_room;
 	t_room->next = NULL;
 	return t_room;
@@ -185,25 +187,32 @@ room* load_world(room* t_room, FILE* t_world)
 				break;
 			case '~':
 				text_keyword = last_keyword = current_char;
+				if (strlen(current_room->areas->name) > 0)
+				{
+					if (current_room->areas->actions == NULL)
+						current_room->areas->actions = alloc_action();
+					else
+						current_room->areas->actions = alloc_actionFirst((action*)current_room->areas->actions->first);
+				}
 				break;
 			default:
 				switch (last_keyword)	//If not, parse the non-keyword items
 				{
-					case '[':
+					case '[': //Begin Room name
 						if (current_char != '\n')
 							current_room->name = strccat(current_room->name, current_char);
 						break;
-					case ']':
+					case ']':	//End Room name
 						if (current_char != '\n')
 							//current_room->areas->desc = strccat(current_room->areas->desc, current_char);
 						break;
-					case '^':
+					case '^':	//Areas
 						if (current_char == '\n')
 							last_keyword = '\n';
 						else
 							current_room->areas->name = strccat(current_room->areas->name, current_char);
 						break;
-					case '>':	//Not yet implemented
+					case '>':	//Doors
 						if (current_char == '\n')
 						{
 							last_keyword = '\n';
@@ -221,17 +230,37 @@ room* load_world(room* t_room, FILE* t_world)
 						else
 							current_room->areas->doors->name = strccat(current_room->areas->doors->name, current_char);
 						break;
-					case '~':	//Not yet implemented
+					case '~':	//Actions
 						if (current_char == '\n')
+						{
 							last_keyword = '\n';
+
+							//Is this an action for an Area, or for the Room superset?
+							if (current_room->areas->actions != NULL)
+								current_room->areas->actions->name = current_room->areas->actions->name->first;
+							else
+							if (current_room->actions != NULL)
+								current_room->actions->name = current_room->actions->name->first;
+						}
+						//Is this an action for an Area, or for the Room superset?
+						else if (current_room->areas->actions != NULL)
+							current_room->areas->actions->name = txtccat(current_room->areas->actions->name, current_char);
+						else
+							current_room->actions->name = txtccat(current_room->actions->name, current_char);
 						break;
 					default:
 						if (current_char != '\n')
 						{
 							switch (text_keyword)
 							{
-								case '^':
+								case '^':	//Area description
 									current_room->areas->desc = strccat(current_room->areas->desc, current_char);
+									break;
+								case '~':	//Action description
+									if (current_room->areas->actions != NULL)
+										current_room->areas->actions->desc = strccat(current_room->areas->actions->desc, current_char);
+									else
+										current_room->actions->desc = strccat(current_room->actions->desc, current_char);
 									break;
 							}
 						}

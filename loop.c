@@ -7,6 +7,18 @@
  */
 void look(room* rooms)
 {
+	rooms->actions->name = rooms->actions->name->first;
+	if (strlen(rooms->actions->name->word) >0)
+		printf("Actions: \n%s\n\n",rooms->actions->name->word);
+	if (rooms->areas->actions != NULL)
+	{
+		rooms->areas->actions = rooms->areas->actions->first;
+		printf("Actions: \n");
+		print_text(rooms->areas->actions->name);
+		printf("%s\n\n", rooms->areas->actions->desc);
+		//printf("Actions: \n%s\n%s\n\n",rooms->areas->actions->name->word,rooms->areas->actions->desc);
+	}
+
 	printf(rooms->name);
 	printf(":\n");
 	printf(rooms->areas->desc);
